@@ -42,8 +42,8 @@ void GameManager::BeginPlay()
 	player1 -> location = Vector2i(300, 300);
 	player1 -> name = "Player1";
 	player1 -> rotation = 0.0f;
-	player1 -> xScale = 0.0f;
-	player1 -> yScale = 0.0f;
+	player1 -> xScale = 0.5f;
+	player1 -> yScale = 0.5f;
 	player1 -> imageName = "Player";
 	player1 -> health = 100;
 	player1 -> damage = 25;
@@ -54,8 +54,8 @@ void GameManager::BeginPlay()
 	key1 -> location = Vector2i(500, 50);
 	key1 -> name = "Key1";
 	key1 -> rotation = 0.0f;
-	key1 -> xScale = 0.0f;
-	key1 -> yScale = 0.0f;
+	key1 -> xScale = 0.5f;
+	key1 -> yScale = 0.5f;
 	key1 -> imageName = "Key";
 	key1 -> pickUpRange = 1;
 
@@ -63,24 +63,24 @@ void GameManager::BeginPlay()
 	door1 -> location = Vector2i(100, 500);
 	door1 -> name = "Door1";
 	door1 -> rotation = 0.0f;
-	door1 -> xScale = 0.0f;
-	door1 -> yScale = 0.0f;
+	door1 -> xScale = 0.5f;
+	door1 -> yScale = 0.5f;
 	door1 -> imageName = "Door";
 
 	Wall* wall1 = new Wall();
 	wall1 -> location = Vector2i(100, 300);
 	wall1 -> name = "Wall1";
 	wall1 -> rotation = 0.0f;
-	wall1 -> xScale = 0.0f;
-	wall1 -> yScale = 0.0f;
+	wall1 -> xScale = 0.5f;
+	wall1 -> yScale = 0.5f;
 	wall1 -> imageName = "Wall";
 
 	HealingSmoke* healingSmoke1 = new HealingSmoke();
 	healingSmoke1->location = Vector2i(0, 0);
 	healingSmoke1->name = "HealingSmoke1";
 	healingSmoke1->rotation = 0.0f;
-	healingSmoke1->xScale = 0.0f;
-	healingSmoke1->yScale = 0.0f;
+	healingSmoke1->xScale = 0.5f;
+	healingSmoke1->yScale = 0.5f;
 	healingSmoke1->imageName = "HealingSmoke";
 	healingSmoke1->addHealth = 30;
 	healingSmoke1->AOE = 3;
@@ -162,9 +162,9 @@ void GameManager::Render(Gdiplus::Graphics& canvas, const CRect& clientRect)
 	Gdiplus::Matrix transform;
 	canvas.GetTransform(&transform);
 
-	canvas.ScaleTransform(0.5f, 0.5f);
+	canvas.ScaleTransform(1.0f, 1.0f);
 	canvas.RotateTransform(0.0f);
-	canvas.TranslateTransform(200.0f, 200.0f);
+	canvas.TranslateTransform(0.0f, 0.0f);
 
 	for (GameEntity* objectPtr : objects)
 	{
@@ -172,15 +172,7 @@ void GameManager::Render(Gdiplus::Graphics& canvas, const CRect& clientRect)
 	}
 
 	// Render method demonstration (You can remove all of this code)
-	GameFrameworkInstance.DrawLine(canvas, Vector2i(200, 200), Vector2i(400, 200), Gdiplus::Color::White);
 
-	GameFrameworkInstance.DrawRectangle(canvas, AABBi(Vector2i(10, 110), Vector2i(100, 200)), false, Gdiplus::Color::White);
-	GameFrameworkInstance.DrawRectangle(canvas, AABBi(Vector2i(200, 110), Vector2i(300, 200)), true, Gdiplus::Color::White);
-
-	canvas.SetTransform(&transform);
-
-	GameFrameworkInstance.DrawCircle(canvas, Vector2i(200, 200), 50, false, Gdiplus::Color::White);
-	GameFrameworkInstance.DrawCircle(canvas, Vector2i(400, 200), 50, true, Gdiplus::Color::White);
 
 	GameFrameworkInstance.DrawText(canvas, Vector2i(100, 0), 12, "Arial", "Hey! If you're seeing this then the game doesn't crash! Hopefully everything works :)", Gdiplus::Color::White);
 
