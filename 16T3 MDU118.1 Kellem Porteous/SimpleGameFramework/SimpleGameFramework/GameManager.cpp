@@ -5,6 +5,8 @@
 #include "Door.h"
 #include "Wall.h"
 #include "HealingSmoke.h"
+#include "PoisonGas.h"
+#include "HealthPickUp.h"
 #include <fstream>
 
 GameManager& GameManager::Instance()
@@ -34,16 +36,18 @@ void GameManager::BeginPlay()
 	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/Door.png"), "Door");
 	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/Wall.png"), "Wall");
 	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/HealingSmoke.png"), "HealingSmoke");
+	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/PosionGas.png"), "PosionGas");
+	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/HealthPickUp.png"), "HealthPickUp");
 
 
 
 	
 	Player* player1 = new Player();
-	player1 -> location = Vector2i(300, 300);
+	player1 -> location = Vector2i(1500, 1500);
 	player1 -> name = "Player1";
 	player1 -> rotation = 0.0f;
-	player1 -> xScale = 0.5f;
-	player1 -> yScale = 0.5f;
+	player1 -> xScale = 0.0f;
+	player1 -> yScale = 0.0f;
 	player1 -> imageName = "Player";
 	player1 -> health = 100;
 	player1 -> damage = 25;
@@ -54,8 +58,8 @@ void GameManager::BeginPlay()
 	key1 -> location = Vector2i(500, 50);
 	key1 -> name = "Key1";
 	key1 -> rotation = 0.0f;
-	key1 -> xScale = 0.5f;
-	key1 -> yScale = 0.5f;
+	key1 -> xScale = 0.0f;
+	key1 -> yScale = 0.0f;
 	key1 -> imageName = "Key";
 	key1 -> pickUpRange = 1;
 
@@ -63,29 +67,51 @@ void GameManager::BeginPlay()
 	door1 -> location = Vector2i(100, 500);
 	door1 -> name = "Door1";
 	door1 -> rotation = 0.0f;
-	door1 -> xScale = 0.5f;
-	door1 -> yScale = 0.5f;
+	door1 -> xScale = 0.0f;
+	door1 -> yScale = 0.0f;
 	door1 -> imageName = "Door";
 
 	Wall* wall1 = new Wall();
 	wall1 -> location = Vector2i(100, 300);
 	wall1 -> name = "Wall1";
 	wall1 -> rotation = 0.0f;
-	wall1 -> xScale = 0.5f;
-	wall1 -> yScale = 0.5f;
+	wall1 -> xScale = 0.0f;
+	wall1 -> yScale = 0.0f;
 	wall1 -> imageName = "Wall";
 
 	HealingSmoke* healingSmoke1 = new HealingSmoke();
-	healingSmoke1->location = Vector2i(0, 0);
-	healingSmoke1->name = "HealingSmoke1";
-	healingSmoke1->rotation = 0.0f;
-	healingSmoke1->xScale = 0.5f;
-	healingSmoke1->yScale = 0.5f;
-	healingSmoke1->imageName = "HealingSmoke";
-	healingSmoke1->addHealth = 30;
-	healingSmoke1->AOE = 3;
+	healingSmoke1 -> location = Vector2i(0, 0);
+	healingSmoke1 -> name = "HealingSmoke1";
+	healingSmoke1 -> rotation = 0.0f;
+	healingSmoke1 -> xScale = 0.0f;
+	healingSmoke1 -> yScale = 0.0f;
+	healingSmoke1 -> imageName = "HealingSmoke";
+	healingSmoke1 -> addHealth = 5;
+	healingSmoke1 -> AOE = 3;
+	healingSmoke1-> duration = 10;
 
 
+	PoisonGas* poisonGas1 = new PoisonGas();
+	poisonGas1 -> location = Vector2i(1000, 1000);
+	poisonGas1 -> name = "PosionGas1";
+	poisonGas1 -> rotation = 0.0f;
+	poisonGas1 -> xScale = 0.0f;
+	poisonGas1 -> yScale = 0.0f;
+	poisonGas1 -> imageName = "PosionGas";
+	poisonGas1 -> damage = 15;
+	poisonGas1 -> AOE = 3;
+	poisonGas1-> duration = 10;
+
+
+	HealthPickUp* healthPickUp1 = new HealthPickUp();
+	healthPickUp1->location = Vector2i(2000, 1000);
+	healthPickUp1->name = "HealthPickUp1";
+	healthPickUp1->rotation = 0.0f;
+	healthPickUp1->xScale = 0.0f;
+	healthPickUp1->yScale = 0.0f;
+	healthPickUp1->imageName = "HealthPickUp";
+	healthPickUp1->addHealth = 30;
+	healthPickUp1->pickUpRange = 1;
 
 	std::ofstream outputFile("objects.csv");
 	outputFile << 1 << std::endl;
@@ -93,7 +119,9 @@ void GameManager::BeginPlay()
 	key1 -> SaveAsText(outputFile);
 	door1 -> SaveAsText(outputFile);
 	wall1 -> SaveAsText(outputFile);
-	healingSmoke1->SaveAsText(outputFile);
+	healingSmoke1 -> SaveAsText(outputFile);
+	poisonGas1 -> SaveAsText(outputFile);
+	healthPickUp1->SaveAsText(outputFile);
 	outputFile.close();
 
 	delete player1;
@@ -101,9 +129,11 @@ void GameManager::BeginPlay()
 	delete door1;
 	delete wall1;
 	delete healingSmoke1;
+	delete poisonGas1;
+	delete healthPickUp1;
 
 	std::ifstream inputFile("objects.csv");
-	int numObjects = 5;
+	int numObjects = 7;
 	inputFile >> numObjects;
 
 	objects.reserve(numObjects);
@@ -126,8 +156,16 @@ void GameManager::BeginPlay()
 		objects.push_back(wall2);
 
 		HealingSmoke* healingSmoke2 = new HealingSmoke();
-		healingSmoke2->LoadFromText(inputFile);
+		healingSmoke2 -> LoadFromText(inputFile);
 		objects.push_back(healingSmoke2);
+
+		PoisonGas* poisonGas2 = new PoisonGas();
+		poisonGas2 -> LoadFromText(inputFile);
+		objects.push_back(poisonGas2);
+
+		HealthPickUp* healthPickUp2 = new HealthPickUp();
+		healthPickUp2 -> LoadFromText(inputFile);
+		objects.push_back(healthPickUp2);
 	}
 
 	// End example code
@@ -162,7 +200,7 @@ void GameManager::Render(Gdiplus::Graphics& canvas, const CRect& clientRect)
 	Gdiplus::Matrix transform;
 	canvas.GetTransform(&transform);
 
-	canvas.ScaleTransform(1.0f, 1.0f);
+	canvas.ScaleTransform(0.2f, 0.2f);
 	canvas.RotateTransform(0.0f);
 	canvas.TranslateTransform(0.0f, 0.0f);
 
@@ -171,7 +209,8 @@ void GameManager::Render(Gdiplus::Graphics& canvas, const CRect& clientRect)
 		objectPtr->Render(canvas, clientRect);
 	}
 
-	// Render method demonstration (You can remove all of this code)
+
+	canvas.SetTransform(&transform);
 
 
 	GameFrameworkInstance.DrawText(canvas, Vector2i(100, 0), 12, "Arial", "Hey! If you're seeing this then the game doesn't crash! Hopefully everything works :)", Gdiplus::Color::White);

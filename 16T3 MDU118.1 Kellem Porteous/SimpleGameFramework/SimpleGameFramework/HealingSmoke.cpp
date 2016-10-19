@@ -23,6 +23,7 @@ void HealingSmoke::SaveAsText_Internal(std::ostream& outputStream)
 {
 	outputStream << "," << addHealth;
 	outputStream << "," << AOE;
+	outputStream << "," << duration;
 
 }
 void HealingSmoke::LoadFromText_Internal(std::istream& inputStream)
@@ -30,4 +31,6 @@ void HealingSmoke::LoadFromText_Internal(std::istream& inputStream)
 	char dummyChar;
 	inputStream >> dummyChar >> addHealth;
 	inputStream >> dummyChar >> AOE;
+	inputStream >> dummyChar >> duration;
+
 }

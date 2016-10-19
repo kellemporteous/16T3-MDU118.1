@@ -12,6 +12,8 @@ enum GameEntityType
 	egetMeleeEnemy,
 	egetRangeEnemy,
 	egetHealingSmoke,
+	egetPoisonGas,
+	egetHealthPickUp,
 
 	egetNumTypes
 };

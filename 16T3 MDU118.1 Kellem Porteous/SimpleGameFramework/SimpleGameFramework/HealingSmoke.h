@@ -10,6 +10,7 @@ public:
 
 	int addHealth;
 	int AOE;
+	int duration;
 
 protected:
 	virtual void SaveAsText_Internal(std::ostream& outputStream);
