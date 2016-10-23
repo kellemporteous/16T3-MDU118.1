@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "GameManager.h"
 #include "Player.h"
+#include "MeleeEnemy.h"
+#include "RangedEnemy.h"
 #include "Key.h"
 #include "Door.h"
 #include "Wall.h"
@@ -38,6 +40,8 @@ void GameManager::BeginPlay()
 	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/HealingSmoke.png"), "HealingSmoke");
 	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/PosionGas.png"), "PosionGas");
 	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/HealthPickUp.png"), "HealthPickUp");
+	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/MeleeEnemy.png"), "MeleeEnemy");
+	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/RangedEnemy.png"), "RangedEnemy");
 
 
 
@@ -54,8 +58,32 @@ void GameManager::BeginPlay()
 	player1 -> atkRange = 1;
 	player1 -> moveSpeed = 10;
 
+	MeleeEnemy* meleeEnemy1 = new MeleeEnemy();
+	meleeEnemy1 ->location = Vector2i(1800, 1800);
+	meleeEnemy1 -> name = "MeleeEnemy1";
+	meleeEnemy1 -> rotation = 0.0f;
+	meleeEnemy1 -> xScale = 0.0f;
+	meleeEnemy1 -> yScale = 0.0f;
+	meleeEnemy1 -> imageName = "MeleeEnemy";
+	meleeEnemy1 -> health = 50;
+	meleeEnemy1 -> damage = 10;
+	meleeEnemy1 -> atkRange = 1;
+	meleeEnemy1 -> moveSpeed = 6;
+
+	RangedEnemy* rangedEnemy1 = new RangedEnemy();
+	rangedEnemy1->location = Vector2i(2500, 2500);
+	rangedEnemy1->name = "RangedEnemy1";
+	rangedEnemy1->rotation = 0.0f;
+	rangedEnemy1->xScale = 0.0f;
+	rangedEnemy1->yScale = 0.0f;
+	rangedEnemy1->imageName = "RangedEnemy";
+	rangedEnemy1->health = 25;
+	rangedEnemy1->damage = 5;
+	rangedEnemy1->atkRange = 10;
+	rangedEnemy1->moveSpeed = 8;
+
 	Key* key1 = new Key();
-	key1 -> location = Vector2i(500, 50);
+	key1 -> location = Vector2i(0, 1500);
 	key1 -> name = "Key1";
 	key1 -> rotation = 0.0f;
 	key1 -> xScale = 0.0f;
@@ -72,7 +100,7 @@ void GameManager::BeginPlay()
 	door1 -> imageName = "Door";
 
 	Wall* wall1 = new Wall();
-	wall1 -> location = Vector2i(100, 300);
+	wall1 -> location = Vector2i(100, 2500);
 	wall1 -> name = "Wall1";
 	wall1 -> rotation = 0.0f;
 	wall1 -> xScale = 0.0f;
@@ -80,7 +108,7 @@ void GameManager::BeginPlay()
 	wall1 -> imageName = "Wall";
 
 	HealingSmoke* healingSmoke1 = new HealingSmoke();
-	healingSmoke1 -> location = Vector2i(0, 0);
+	healingSmoke1 -> location = Vector2i(1000, 1000);
 	healingSmoke1 -> name = "HealingSmoke1";
 	healingSmoke1 -> rotation = 0.0f;
 	healingSmoke1 -> xScale = 0.0f;
@@ -92,7 +120,7 @@ void GameManager::BeginPlay()
 
 
 	PoisonGas* poisonGas1 = new PoisonGas();
-	poisonGas1 -> location = Vector2i(1000, 1000);
+	poisonGas1 -> location = Vector2i(2000, 2000);
 	poisonGas1 -> name = "PosionGas1";
 	poisonGas1 -> rotation = 0.0f;
 	poisonGas1 -> xScale = 0.0f;
@@ -116,6 +144,8 @@ void GameManager::BeginPlay()
 	std::ofstream outputFile("objects.csv");
 	outputFile << 1 << std::endl;
 	player1 -> SaveAsText(outputFile);
+	meleeEnemy1->SaveAsText(outputFile);
+	rangedEnemy1->SaveAsText(outputFile);
 	key1 -> SaveAsText(outputFile);
 	door1 -> SaveAsText(outputFile);
 	wall1 -> SaveAsText(outputFile);
@@ -125,6 +155,8 @@ void GameManager::BeginPlay()
 	outputFile.close();
 
 	delete player1;
+	delete meleeEnemy1;
+	delete rangedEnemy1;
 	delete key1;
 	delete door1;
 	delete wall1;
@@ -133,7 +165,7 @@ void GameManager::BeginPlay()
 	delete healthPickUp1;
 
 	std::ifstream inputFile("objects.csv");
-	int numObjects = 7;
+	int numObjects = 8;
 	inputFile >> numObjects;
 
 	objects.reserve(numObjects);
@@ -142,6 +174,14 @@ void GameManager::BeginPlay()
 		Player* player2 = new Player();
 		player2 -> LoadFromText(inputFile);
 		objects.push_back(player2);
+
+		MeleeEnemy* meleeEnemy2 = new MeleeEnemy();
+		meleeEnemy2->LoadFromText(inputFile);
+		objects.push_back(meleeEnemy2);
+
+		RangedEnemy* rangedEnemy2 = new RangedEnemy();
+		rangedEnemy2->LoadFromText(inputFile);
+		objects.push_back(rangedEnemy2);
 
 		Key* key2 = new Key();
 		key2 -> LoadFromText(inputFile);
