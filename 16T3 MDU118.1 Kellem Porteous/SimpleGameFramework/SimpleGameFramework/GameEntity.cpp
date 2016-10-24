@@ -44,10 +44,6 @@ void GameEntity::SaveAsText(std::ostream& outputStream)
 
 void GameEntity::LoadFromText(std::istream& inputStream)
 {
-	// read the enumeration into a integer then cast/convert it to the enum
-	int typeValue;
-	inputStream >> typeValue;
-	type = (GameEntityType)typeValue;
 
 	char dummyValue;
 	// consume/skip over the comma

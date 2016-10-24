@@ -42,9 +42,6 @@ void GameManager::BeginPlay()
 	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/HealthPickUp.png"), "HealthPickUp");
 	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/MeleeEnemy.png"), "MeleeEnemy");
 	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/RangedEnemy.png"), "RangedEnemy");
-
-
-
 	
 	Player* player1 = new Player();
 	player1 -> location = Vector2i(1500, 1500);
@@ -141,17 +138,23 @@ void GameManager::BeginPlay()
 	healthPickUp1->addHealth = 30;
 	healthPickUp1->pickUpRange = 1;
 
+	listObjects.push_back(player1);
+	listObjects.push_back(meleeEnemy1);
+	listObjects.push_back(rangedEnemy1);
+	listObjects.push_back(key1);
+	listObjects.push_back(door1);
+	listObjects.push_back(wall1);
+	listObjects.push_back(healingSmoke1);
+	listObjects.push_back(poisonGas1);
+	listObjects.push_back(healthPickUp1);
+
 	std::ofstream outputFile("objects.csv");
-	outputFile << 1 << std::endl;
-	player1 -> SaveAsText(outputFile);
-	meleeEnemy1->SaveAsText(outputFile);
-	rangedEnemy1->SaveAsText(outputFile);
-	key1 -> SaveAsText(outputFile);
-	door1 -> SaveAsText(outputFile);
-	wall1 -> SaveAsText(outputFile);
-	healingSmoke1 -> SaveAsText(outputFile);
-	poisonGas1 -> SaveAsText(outputFile);
-	healthPickUp1->SaveAsText(outputFile);
+	outputFile << listObjects.size() << std::endl;
+
+	for (GameEntity* objectPtr : listObjects)
+	{
+		objectPtr->SaveAsText(outputFile);
+	}
 	outputFile.close();
 
 	delete player1;
@@ -165,47 +168,61 @@ void GameManager::BeginPlay()
 	delete healthPickUp1;
 
 	std::ifstream inputFile("objects.csv");
-	int numObjects = 8;
+	int numObjects = 9;
 	inputFile >> numObjects;
 
 	objects.reserve(numObjects);
 	for (int index = 0; index < numObjects; ++index)
 	{
-		Player* player2 = new Player();
-		player2 -> LoadFromText(inputFile);
-		objects.push_back(player2);
+		int typeValue;
+		inputFile >> typeValue;
+		GameEntityType type = (GameEntityType)typeValue;
 
-		MeleeEnemy* meleeEnemy2 = new MeleeEnemy();
-		meleeEnemy2->LoadFromText(inputFile);
-		objects.push_back(meleeEnemy2);
+		GameEntity* loadedEntityPtr = nullptr;
+		switch (type)
+		{
+		case egetBase:
+			break;
 
-		RangedEnemy* rangedEnemy2 = new RangedEnemy();
-		rangedEnemy2->LoadFromText(inputFile);
-		objects.push_back(rangedEnemy2);
+		case egetPlayer:
+			loadedEntityPtr = new Player();
+			break;
 
-		Key* key2 = new Key();
-		key2 -> LoadFromText(inputFile);
-		objects.push_back(key2);
+		case egetMeleeEnemy:
+			loadedEntityPtr = new MeleeEnemy();
+			break;
 
-		Door* door2 = new Door();
-		door2 -> LoadFromText(inputFile);
-		objects.push_back(door2);
+		case egetRangeEnemy:
+			loadedEntityPtr = new RangedEnemy;
+			break;
 
-		Wall* wall2 = new Wall();
-		wall2 -> LoadFromText(inputFile);
-		objects.push_back(wall2);
+		case egetKey:
+			loadedEntityPtr = new Key();
+			break;
 
-		HealingSmoke* healingSmoke2 = new HealingSmoke();
-		healingSmoke2 -> LoadFromText(inputFile);
-		objects.push_back(healingSmoke2);
+		case egetDoor:
+			loadedEntityPtr = new Door();
+			break;
 
-		PoisonGas* poisonGas2 = new PoisonGas();
-		poisonGas2 -> LoadFromText(inputFile);
-		objects.push_back(poisonGas2);
+		case egetWall:
+			loadedEntityPtr = new Wall();
+			break;
 
-		HealthPickUp* healthPickUp2 = new HealthPickUp();
-		healthPickUp2 -> LoadFromText(inputFile);
-		objects.push_back(healthPickUp2);
+		case egetHealingSmoke:
+			loadedEntityPtr = new HealingSmoke();
+			break;
+
+		case egetPoisonGas:
+			loadedEntityPtr = new PoisonGas();
+			break;
+
+		case egetHealthPickUp:
+			loadedEntityPtr = new HealthPickUp();
+			break;
+		}
+		
+		loadedEntityPtr-> LoadFromText(inputFile);
+		objects.push_back(loadedEntityPtr);
 	}
 
 	// End example code

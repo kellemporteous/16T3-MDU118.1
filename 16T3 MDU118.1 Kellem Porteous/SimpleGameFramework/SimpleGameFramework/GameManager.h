@@ -34,6 +34,8 @@ private:
 	~GameManager();
 
 	std::vector<GameEntity*> objects;
+	std::vector<GameEntity*> listObjects;
+
 
 };
 
