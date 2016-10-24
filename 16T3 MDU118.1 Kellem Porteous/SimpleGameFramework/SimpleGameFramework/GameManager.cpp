@@ -32,7 +32,7 @@ void GameManager::BeginPlay()
 	////////////////////////////////////////////////////////////////////////////////
 	// Begin example code
 
-	// Load the image file Untitled.png from the Images folder. Give it the unique name of Image1
+	// These lines of code are so that you can reference the images that are wanted to be drawn. is does not draw the images but give access to them from the folder
 	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/Player.png"), "Player");
 	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/Key.png"), "Key");
 	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/Door.png"), "Door");
@@ -43,6 +43,7 @@ void GameManager::BeginPlay()
 	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/MeleeEnemy.png"), "MeleeEnemy");
 	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/RangedEnemy.png"), "RangedEnemy");
 	
+	// These blocks of code are were their variables are implemented and manipulated
 	Player* player1 = new Player();
 	player1 -> location = Vector2i(1500, 1500);
 	player1 -> name = "Player1";
@@ -113,7 +114,7 @@ void GameManager::BeginPlay()
 	healingSmoke1 -> imageName = "HealingSmoke";
 	healingSmoke1 -> addHealth = 5;
 	healingSmoke1 -> AOE = 3;
-	healingSmoke1-> duration = 10;
+	healingSmoke1 -> duration = 10;
 
 
 	PoisonGas* poisonGas1 = new PoisonGas();
@@ -125,7 +126,7 @@ void GameManager::BeginPlay()
 	poisonGas1 -> imageName = "PosionGas";
 	poisonGas1 -> damage = 15;
 	poisonGas1 -> AOE = 3;
-	poisonGas1-> duration = 10;
+	poisonGas1 -> duration = 10;
 
 
 	HealthPickUp* healthPickUp1 = new HealthPickUp();
@@ -138,6 +139,7 @@ void GameManager::BeginPlay()
 	healthPickUp1->addHealth = 30;
 	healthPickUp1->pickUpRange = 1;
 
+	// this block of code is so that i can save all references to a list rather that saving then individually
 	listObjects.push_back(player1);
 	listObjects.push_back(meleeEnemy1);
 	listObjects.push_back(rangedEnemy1);
