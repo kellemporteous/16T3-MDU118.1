@@ -32,7 +32,7 @@ void GameManager::BeginPlay()
 	////////////////////////////////////////////////////////////////////////////////
 	// Begin example code
 
-	// These lines of code are so that you can reference the images that are wanted to be drawn. is does not draw the images but give access to them from the folder
+	// These lines of code are so that you can reference the images that are wanted to be drawn. this does not draw the images but give access to them from the folder
 	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/Player.png"), "Player");
 	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/Key.png"), "Key");
 	GameFrameworkInstance.LoadImageResource(AppConfigInstance.GetResourcePath("Images/Door.png"), "Door");
@@ -153,12 +153,14 @@ void GameManager::BeginPlay()
 	std::ofstream outputFile("objects.csv");
 	outputFile << listObjects.size() << std::endl;
 
+	// saves all entities to text
 	for (GameEntity* objectPtr : listObjects)
 	{
 		objectPtr->SaveAsText(outputFile);
 	}
 	outputFile.close();
 
+	//deletes entities
 	delete player1;
 	delete meleeEnemy1;
 	delete rangedEnemy1;
@@ -173,6 +175,7 @@ void GameManager::BeginPlay()
 	int numObjects = 9;
 	inputFile >> numObjects;
 
+	//loads all of the entities 
 	objects.reserve(numObjects);
 	for (int index = 0; index < numObjects; ++index)
 	{
@@ -241,7 +244,7 @@ void GameManager::EndPlay()
 		delete objectPtr;
 	}
 
-	// clear the vector (empty the elements)
+	// this clears out the vector to avoid memory leaks
 	objects.clear();
 }
 
@@ -263,6 +266,7 @@ void GameManager::Render(Gdiplus::Graphics& canvas, const CRect& clientRect)
 	canvas.RotateTransform(0.0f);
 	canvas.TranslateTransform(0.0f, 0.0f);
 
+	// these lines of code tell all the classes images to render
 	for (GameEntity* objectPtr : objects)
 	{
 		objectPtr->Render(canvas, clientRect);

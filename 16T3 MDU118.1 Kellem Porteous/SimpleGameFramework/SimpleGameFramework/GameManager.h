@@ -33,6 +33,7 @@ private:
 	GameManager();
 	~GameManager();
 
+	//these are the lists that the classes are pushed back to
 	std::vector<GameEntity*> objects;
 	std::vector<GameEntity*> listObjects;
 

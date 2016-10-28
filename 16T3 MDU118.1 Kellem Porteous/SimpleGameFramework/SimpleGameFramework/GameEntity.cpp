@@ -46,7 +46,7 @@ void GameEntity::LoadFromText(std::istream& inputStream)
 {
 
 	char dummyValue;
-	// consume/skip over the comma
+	// skips comma
 	inputStream >> dummyValue;
 
 	// read in up to the comma and store into name
