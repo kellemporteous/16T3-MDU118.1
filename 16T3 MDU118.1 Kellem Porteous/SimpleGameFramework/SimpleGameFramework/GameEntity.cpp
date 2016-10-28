@@ -14,8 +14,6 @@ GameEntity::~GameEntity()
 void GameEntity::SaveAsText_Internal(std::ostream& outputStream)
 {
 	// Save any child specific info
-	// If saving out info MUST ADD IN LEADING COMMA!
-	// DO NOT ADD END OF LINE CHARACTER HERE!
 }
 
 void GameEntity::LoadFromText_Internal(std::istream& inputStream)
